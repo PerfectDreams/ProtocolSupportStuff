@@ -16,7 +16,6 @@ class ItemStackHandler(val m: ProtocolSupportStuff) : Listener {
 
 	@EventHandler
 	fun onItemStackWrite(ev: ItemStackWriteEvent) {
-		println("${ev.original.type} - " + ev.result.type)
 		if (ev.original.type != ev.result.type) { // Only if it is actually remapped
 			if (m.config.getBoolean("translateDisplayName")) {
 				if (!ev.original.itemMeta.hasDisplayName()) { // We should only change the display name if it doesn't has one

@@ -93,8 +93,7 @@ class ProtocolSupportStuff : JavaPlugin() {
 		val config = config
 		for (version in ProtocolVersion.getAllSupported()) {
 			val enabled = config.getBoolean("versions.${version.name}", true)
-
-			println((if (enabled) "Enabling" else "Disabling") + " ${version.name}")
+			
 			if (enabled) ProtocolSupportAPI.enableProtocolVersion(version) else ProtocolSupportAPI.disableProtocolVersion(version)
 		}
 
