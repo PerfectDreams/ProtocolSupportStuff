@@ -1,0 +1,4 @@
+name: ProtocolSupportStuff
+main: net.pocketdreams.protocolsupportstuff.ProtocolSupportStuff
+version: 1.0.0
+depend: ["ProtocolSupport"]
