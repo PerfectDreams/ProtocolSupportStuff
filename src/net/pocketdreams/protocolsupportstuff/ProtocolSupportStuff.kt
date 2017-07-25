@@ -97,6 +97,8 @@ class ProtocolSupportStuff : JavaPlugin() {
 			if (enabled) ProtocolSupportAPI.enableProtocolVersion(version) else ProtocolSupportAPI.disableProtocolVersion(version)
 		}
 
+		BlockRemapperControl.resetToDefault()
+		ItemRemapperControl.resetToDefault()
 
 		ProtocolVersion.getAllSupported().forEach { version ->
 			val blockRemapper = BlockRemapperControl(version)
