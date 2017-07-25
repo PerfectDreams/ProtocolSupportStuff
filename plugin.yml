@@ -1,5 +1,5 @@
 name: ProtocolSupportStuff
 main: net.pocketdreams.protocolsupportstuff.ProtocolSupportStuff
-version: 1.0.1
+version: 1.0.2
 depend: ["ProtocolSupport"]
 softdepend: ["ProtocolLib"]
