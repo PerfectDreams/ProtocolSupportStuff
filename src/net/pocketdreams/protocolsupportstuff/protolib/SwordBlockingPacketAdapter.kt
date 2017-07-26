@@ -2,6 +2,7 @@ package net.pocketdreams.protocolsupportstuff.protolib
 
 import com.comphenix.protocol.PacketType
 import com.comphenix.protocol.ProtocolLibrary
+import com.comphenix.protocol.events.ListenerPriority
 import com.comphenix.protocol.events.PacketAdapter
 import com.comphenix.protocol.events.PacketEvent
 import com.comphenix.protocol.wrappers.EnumWrappers
@@ -10,14 +11,16 @@ import protocolsupport.api.ProtocolSupportAPI
 import protocolsupport.api.ProtocolVersion
 import org.bukkit.entity.LivingEntity
 
-class SwordBlockingPacketAdapter(m: ProtocolSupportStuff): PacketAdapter(m) {
-	override fun onPacketReceiving(event: PacketEvent) {
-		super.onPacketReceiving(event)
+class SwordBlockingPacketAdapter(m: ProtocolSupportStuff) : PacketAdapter(m,
+		ListenerPriority.HIGHEST, // Listener priority
+		PacketType.Play.Client.BLOCK_PLACE, // Packets types
+		PacketType.Play.Server.ENTITY_METADATA) {
 
+	override fun onPacketReceiving(event: PacketEvent) {
 		if (!ProtocolSupportAPI.getProtocolVersion(event.player).isBefore(ProtocolVersion.MINECRAFT_1_9))
 			return // Ignore this event if the player is not from a pre-1.9 version
 
-		if (event.packetType!= PacketType.Play.Client.BLOCK_PLACE)
+		if (event.packetType != PacketType.Play.Client.BLOCK_PLACE)
 			return // Ignore this event if it isn't a block place packet
 
 		// Everything good? Great! Then...
@@ -33,12 +36,10 @@ class SwordBlockingPacketAdapter(m: ProtocolSupportStuff): PacketAdapter(m) {
 	}
 
 	override fun onPacketSending(event: PacketEvent) {
-		super.onPacketSending(event)
-
 		if (!ProtocolSupportAPI.getProtocolVersion(event.player).isBefore(ProtocolVersion.MINECRAFT_1_9))
 			return // Ignore this event if the player is not from a pre-1.9 version
 
-		if (event.packetType!= PacketType.Play.Server.ENTITY_METADATA)
+		if (event.packetType != PacketType.Play.Server.ENTITY_METADATA)
 			return // Ignore this event if it isn't an entity metadata packet
 
 		if (event.packet.getEntityModifier(event.player.world).read(0) !is LivingEntity)
@@ -54,7 +55,8 @@ class SwordBlockingPacketAdapter(m: ProtocolSupportStuff): PacketAdapter(m) {
 			if (wwo.index == 6) { // Index 6 = Hand States
 				// Value 3 = Off Hand, Value 1 = Main Hand
 				// We are going to set it to 1 (main hand) if the value is 3 (off hand) so we can fake a sword blocking animation for older MC clients
-				if (wwo.handle is Byte && (wwo.value as Byte).toInt() == 3) {
+				val value = wwo.value
+				if (value is Byte && value == 3.toByte()) {
 					wwo.value = 1.toByte()
 				}
 			}
