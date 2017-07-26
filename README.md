@@ -25,6 +25,7 @@
 # translateDisplayName: Automatically changes the item name for older version to the proper name
 # addToLore: Adds a small text to the item lore explaining that this is an item from a newer version
 # newerItemTextLore: Customize the text in the lore... if you want to, idk.
+# swordBlocking: Allows pre-1.9 clients to sword block like the good old days, requires ProtocolLib and a auto shield block plugin (like OldCombatMechanics)
 # configVersion: plz don't change this k thx bye
 # 
 # ===[ MORE MISC STUFF ]===
@@ -59,8 +60,13 @@ items:
     from: Totem
     to: Armor Stand
     between: Minecraft 1.8, Minecraft 1.10
-translateDisplayName: false
-addToLore: false
+  remap1:
+    from: Concrete
+    to: Stained Clay
+    before: Minecraft 1.12
+translateDisplayName: true
+addToLore: true
 newerItemTextLore: '&8This item is actually &7{name}&8 from newer versions of Minecraft'
-configVersion: 1
+swordBlocking: true
+configVersion: 2
 ```
