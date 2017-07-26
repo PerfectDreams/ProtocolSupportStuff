@@ -10,6 +10,7 @@ import net.pocketdreams.protocolsupportstuff.ProtocolSupportStuff
 import protocolsupport.api.ProtocolSupportAPI
 import protocolsupport.api.ProtocolVersion
 import org.bukkit.entity.LivingEntity
+import protocolsupport.api.ProtocolType
 
 class SwordBlockingPacketAdapter(m: ProtocolSupportStuff) : PacketAdapter(m,
 		ListenerPriority.HIGHEST, // Listener priority
@@ -17,6 +18,9 @@ class SwordBlockingPacketAdapter(m: ProtocolSupportStuff) : PacketAdapter(m,
 		PacketType.Play.Server.ENTITY_METADATA) {
 
 	override fun onPacketReceiving(event: PacketEvent) {
+		if (ProtocolSupportAPI.getProtocolVersion(event.player).protocolType != ProtocolType.PC)
+			return // Ignore this event if the player isn't using Minecraft Java (PC)
+
 		if (!ProtocolSupportAPI.getProtocolVersion(event.player).isBefore(ProtocolVersion.MINECRAFT_1_9))
 			return // Ignore this event if the player is not from a pre-1.9 version
 
@@ -36,6 +40,9 @@ class SwordBlockingPacketAdapter(m: ProtocolSupportStuff) : PacketAdapter(m,
 	}
 
 	override fun onPacketSending(event: PacketEvent) {
+		if (ProtocolSupportAPI.getProtocolVersion(event.player).protocolType != ProtocolType.PC)
+			return // Ignore this event if the player isn't using Minecraft Java (PC)
+		
 		if (!ProtocolSupportAPI.getProtocolVersion(event.player).isBefore(ProtocolVersion.MINECRAFT_1_9))
 			return // Ignore this event if the player is not from a pre-1.9 version
 
