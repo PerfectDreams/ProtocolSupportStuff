@@ -53,7 +53,7 @@ class ProtocolSupportStuff : JavaPlugin() {
 		config.options().header(header)
 
 		// Update config stuff
-		if (config.getInt("configVersion") == 2) {
+		if (config.getInt("configVersion") == 1) {
 			config.set("swordBlocking", false)
 			config.set("configVersion", 2)
 			saveConfig()

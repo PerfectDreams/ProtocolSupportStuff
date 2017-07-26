@@ -51,7 +51,7 @@ class SwordBlockingPacketAdapter(m: ProtocolSupportStuff): PacketAdapter(m) {
 		val clonedPacket = event.packet.deepClone() // Deep clone the packet!
 
 		clonedPacket.watchableCollectionModifier.read(0).forEach { wwo ->
-			if (wwo.index === 6) { // Index 6 = Hand States
+			if (wwo.index == 6) { // Index 6 = Hand States
 				// Value 3 = Off Hand, Value 1 = Main Hand
 				// We are going to set it to 1 (main hand) if the value is 3 (off hand) so we can fake a sword blocking animation for older MC clients
 				if (wwo.handle is Byte && (wwo.value as Byte).toInt() == 3) {
