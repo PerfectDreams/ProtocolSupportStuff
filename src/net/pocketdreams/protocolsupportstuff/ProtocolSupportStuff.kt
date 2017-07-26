@@ -1,8 +1,11 @@
 package net.pocketdreams.protocolsupportstuff
 
+import com.comphenix.protocol.ProtocolLibrary
 import com.mrpowergamerbr.sparklycore.utils.commands.AbstractCommand
 import net.pocketdreams.protocolsupportstuff.handlers.ItemStackHandler
+import net.pocketdreams.protocolsupportstuff.protolib.SwordBlockingPacketAdapter
 import org.apache.commons.lang3.text.WordUtils
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.command.Command
@@ -15,8 +18,46 @@ import protocolsupport.api.remapper.BlockRemapperControl
 import protocolsupport.api.remapper.ItemRemapperControl
 
 class ProtocolSupportStuff : JavaPlugin() {
+	var swordBlockingPacketAdapter: SwordBlockingPacketAdapter? = null;
+
 	override fun onEnable() {
 		super.onEnable()
+		val header = "ProtocolSupportStuff Configuration File\n" +
+				"A plugin that does... stuff, I guess. Disable Minecraft versions (even the current server!), remap blocks/items for older versions and much more!\n\n" +
+				"===[ ENABLING AND DISABLING VERSIONS ]===\n" +
+				"Just flip the switch to \"false\" and then ProtocolSupport will just flat out forget that version exists!\n\n" +
+				"===[ BLOCK/ITEM REMAPPING ]===\n" +
+				"You don't like concrete being bricks in pre-1.12? Then why not change it to something else!\n\n" +
+				"How it works?\n" +
+				"blocks/items:\n" +
+				"    remapX: (Don't forget to change X to a different number! You must not have any duplicate remap keys!)\n" +
+				"       from: Concrete\n" +
+				"       to: Stained Clay\n" +
+				"       fromData: 0 (Optional, you can omit this)\n" +
+				"       toData: 0 (Optional too)\n" +
+				"Now you need to choose one of the three following options! They are self explanatory and you can only choose ONE, not three, not two, just ONE.\n" +
+				"Also, you should see what is a better fit for your use case\n" +
+				"       before: Minecraft 1.12 (Every version (but not including) before 1.12)\n" +
+				"       after: Minecraft 1.8 (Every version (but not including) after 1.8)\n" +
+				"       range: \"Minecraft 1.8, Minecraft 1.9\" (Every version between 1.8 and 1.9)\n\n" +
+				"===[ MISC STUFF ]===\n" +
+				"translateDisplayName: Automatically changes the item name for older version to the proper name\n" +
+				"addToLore: Adds a small text to the item lore explaining that this is an item from a newer version\n" +
+				"newerItemTextLore: Customize the text in the lore... if you want to, idk.\n" +
+				"swordBlocking: Allows pre-1.9 clients to sword block like the good old days, requires ProtocolLib and a auto shield block plugin (like OldCombatMechanics)\n" +
+				"configVersion: plz don't change this k thx bye\n\n" +
+				"===[ MORE MISC STUFF ]===\n" +
+				"thx to MrPowerGamerBR, Shevchik and 7kasper\n\n" +
+				"GitHub: https://github.com/PocketDreams/ProtocolSupportStuff (report issues to me!)"
+
+		config.options().header(header)
+
+		// Update config stuff
+		if (config.getInt("configVersion") == 2) {
+			config.set("swordBlocking", false)
+			config.set("configVersion", 2)
+			saveConfig()
+		}
 
 		// Dynamic config because why not?
 		// (Actually for future proofing)
@@ -41,34 +82,9 @@ class ProtocolSupportStuff : JavaPlugin() {
 			config.set("translateDisplayName", false)
 			config.set("addToLore", false)
 			config.set("newerItemTextLore", "&8This item is actually &7{name}&8 from newer versions of Minecraft")
-			config.set("configVersion", 1)
+			config.set("swordBlocking", false)
+			config.set("configVersion", 2)
 
-			config.options().header("ProtocolSupportStuff Configuration File\n" +
-					"A plugin that does... stuff, I guess. Disable Minecraft versions (even the current server!), remap blocks/items for older versions and much more!\n\n" +
-					"===[ ENABLING AND DISABLING VERSIONS ]===\n" +
-					"Just flip the switch to \"false\" and then ProtocolSupport will just flat out forget that version exists!\n\n" +
-					"===[ BLOCK/ITEM REMAPPING ]===\n" +
-					"You don't like concrete being bricks in pre-1.12? Then why not change it to something else!\n\n" +
-					"How it works?\n" +
-					"blocks/items:\n" +
-					"    remapX: (Don't forget to change X to a different number! You must not have any duplicate remap keys!)\n" +
-					"       from: Concrete\n" +
-					"       to: Stained Clay\n" +
-					"       fromData: 0 (Optional, you can omit this)\n" +
-					"       toData: 0 (Optional too)\n" +
-			        "Now you need to choose one of the three following options! They are self explanatory and you can only choose ONE, not three, not two, just ONE.\n" +
-					"Also, you should see what is a better fit for your use case\n" +
-					"       before: Minecraft 1.12 (Every version (but not including) before 1.12)\n" +
-					"       after: Minecraft 1.8 (Every version (but not including) after 1.8)\n" +
-					"       range: \"Minecraft 1.8, Minecraft 1.9\" (Every version between 1.8 and 1.9)\n\n" +
-			        "===[ MISC STUFF ]===\n" +
-					"translateDisplayName: Automatically changes the item name for older version to the proper name\n" +
-					"addToLore: Adds a small text to the item lore explaining that this is an item from a newer version\n" +
-					"newerItemTextLore: Customize the text in the lore... if you want to, idk.\n" +
-					"configVersion: plz don't change this k thx bye\n\n" +
-					"===[ MORE MISC STUFF ]===\n" +
-			        "thx to MrPowerGamerBR, Shevchik and 7kasper\n\n" +
-					"GitHub: https://github.com/PocketDreams/ProtocolSupportStuff (report issues to me!)");
 			saveConfig()
 		}
 
@@ -90,6 +106,7 @@ class ProtocolSupportStuff : JavaPlugin() {
 
 	fun applyConfigChanges() {
 		reloadConfig()
+		// ===[ VERSION ENABLING/DISABLING ]===
 		val config = config
 		for (version in ProtocolVersion.getAllSupported()) {
 			val enabled = config.getBoolean("versions.${version.name}", true)
@@ -97,6 +114,25 @@ class ProtocolSupportStuff : JavaPlugin() {
 			if (enabled) ProtocolSupportAPI.enableProtocolVersion(version) else ProtocolSupportAPI.disableProtocolVersion(version)
 		}
 
+		// ===[ PRE-1.9 SWORD BLOCKING ]===
+		if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
+			if (swordBlockingPacketAdapter != null) {
+				// Unregister old swordBlockingPacketAdapter instance
+				val protocolManager = ProtocolLibrary.getProtocolManager();
+				protocolManager.removePacketListener(swordBlockingPacketAdapter)
+			}
+
+			if (config.getBoolean("swordBlocking")) {
+				// Enable Pre-1.9 Sword Blocking
+
+				// First we get the ProtocolLib Protocol Manager
+				val protocolManager = ProtocolLibrary.getProtocolManager();
+				swordBlockingPacketAdapter = SwordBlockingPacketAdapter(this)
+				protocolManager.addPacketListener(swordBlockingPacketAdapter)
+			}
+		}
+
+		// ===[ BLOCK/ITEM REMAPPING ]===
 		BlockRemapperControl.resetToDefault()
 		ItemRemapperControl.resetToDefault()
 
