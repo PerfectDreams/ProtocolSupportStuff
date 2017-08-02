@@ -1,7 +1,7 @@
 package net.pocketdreams.protocolsupportstuff
 
 import com.comphenix.protocol.ProtocolLibrary
-import com.mrpowergamerbr.sparklycore.utils.commands.AbstractCommand
+import net.pocketdreams.protocolsupportstuff.utils.AbstractCommand
 import net.pocketdreams.protocolsupportstuff.handlers.ItemStackHandler
 import net.pocketdreams.protocolsupportstuff.protolib.SwordBlockingPacketAdapter
 import org.apache.commons.lang3.text.WordUtils
