@@ -1,4 +1,4 @@
-package com.mrpowergamerbr.sparklycore.utils.commands
+package net.pocketdreams.protocolsupportstuff.utils
 
 import org.bukkit.Bukkit
 import org.bukkit.command.Command
