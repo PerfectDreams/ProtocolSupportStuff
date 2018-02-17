@@ -35,6 +35,7 @@ class ProtocolSupportStuff : JavaPlugin() {
 				"       to: Stained Clay\n" +
 				"       fromData: 0 (Optional, you can omit this)\n" +
 				"       toData: 0 (Optional too)\n" +
+				"		everyData: false (Optional too)\n" +
 				"Now you need to choose one of the three following options! They are self explanatory and you can only choose ONE, not three, not two, just ONE.\n" +
 				"Also, you should see what is a better fit for your use case\n" +
 				"       before: Minecraft 1.12 (Every version (but not including) before 1.12)\n" +
@@ -158,6 +159,7 @@ class ProtocolSupportStuff : JavaPlugin() {
 		val to = Material.valueOf(config.getString("$readFrom.$value.to").enumify())
 		val fromData = config.getInt("$readFrom.$value.fromData", -1)
 		val toData = config.getInt("$readFrom.$value.toData", -1)
+		val everyData = config.getBoolean("$readFrom.$value.everyData", false)
 		var range = arrayOf<ProtocolVersion>()
 
 		if (config.contains("$readFrom.$value.before")) {
@@ -184,7 +186,14 @@ class ProtocolSupportStuff : JavaPlugin() {
 				}
 			} else {
 				if (remapper is BlockRemapperControl) {
-					remapper.setRemap(from, to)
+					if (everyData) {
+						// Copied from BlockRemapperControl.setRemap(int, int)
+                        for (i in 0..15) {
+                            remapper.setRemap(from, i, to, 0)
+                        }
+                    } else {
+                        remapper.setRemap(from, to)
+                    }
 				} else if (remapper is ItemRemapperControl) {
 					remapper.setRemap(from, to)
 				}
