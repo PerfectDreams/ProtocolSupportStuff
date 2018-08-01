@@ -48,7 +48,7 @@
             <url>http://dl.bintray.com/kotlin/kotlin-eap</url>
         </pluginRepository>
     </pluginRepositories>
-	
+
     <dependencies>
         <dependency>
             <groupId>com.destroystokyo.paper</groupId>
@@ -81,7 +81,7 @@
     </dependencies>
 
     <build>
-		<sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
+        <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
         <plugins>
             <plugin>
                 <artifactId>kotlin-maven-plugin</artifactId>
@@ -112,6 +112,10 @@
                         </goals>
                         <configuration>
                             <relocations>
+                                <relocation>
+                                    <pattern>kotlin</pattern>
+                                    <shadedPattern>net.perfectdreams.protocolsupportstuff.libs.kotlin</shadedPattern>
+                                </relocation>
                                 <relocation>
                                     <pattern>co.aikar.commands</pattern>
                                     <shadedPattern>net.perfectdreams.protocolsupportstuff.libs.acf</shadedPattern>

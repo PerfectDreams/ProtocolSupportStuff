@@ -8,8 +8,7 @@ import org.bukkit.event.player.PlayerJoinEvent
 class PlayerListener(val m: ProtocolSupportStuff) : Listener {
 	@EventHandler
 	fun onJoin(e: PlayerJoinEvent) {
-		if (m.paper && m.config.getBoolean("hacks.sword-blocking")) {
+		if (m.paper && m.config.getBoolean("hacks.sword-blocking"))
 			e.player.shieldBlockingDelay = 0
-		}
 	}
 }

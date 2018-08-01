@@ -19,3 +19,7 @@ fun String.toBaseComponent(): Array<out BaseComponent> {
 fun String.toTextComponent(): TextComponent {
 	return TextComponent(*TextComponent.fromLegacyText(this))
 }
+
+fun String.enumify(): String {
+	return this.replace(" ", "_").replace(".", "_").toUpperCase()
+}
