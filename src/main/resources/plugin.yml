@@ -1,5 +1,9 @@
 name: ProtocolSupportStuff
-main: net.pocketdreams.protocolsupportstuff.ProtocolSupportStuff
-version: 1.0.2
-depend: ["ProtocolSupport"]
-softdepend: ["ProtocolLib"]
+main: net.perfectdreams.protocolsupportstuff.ProtocolSupportStuff
+version: 2.0.0
+description: A plugin that does... stuff, I guess. Disable MC versions, remap items, pre-1.9 PvP and much more!
+authors:
+- MrPowerGamerBR
+website: https://perfectdreams.net/
+softdepend: ["ProtocolSupport", "ProtocolLib"]
+api-version: 1.13
