@@ -23,9 +23,14 @@ class ItemStackWriteListener(val m: ProtocolSupportStuff) : Listener {
 			ev.forcedDisplayName = TextComponent("§f$translationKey")
 
 		if (m.config.getBoolean("add-to-lore")) {
+			val namespacedKey = ev.original.type.key
+
 			var loreText = m.config.getString("newer-item-text-lore").translateColorCodes()
 
 			loreText = loreText.replace("{name}", translationKey)
+					.replace("{id}", namespacedKey.namespace + ":" + namespacedKey.key)
+					.replace("{namespace}", namespacedKey.namespace)
+					.replace("{key}", namespacedKey.key)
 
 			ev.additionalLore.add(loreText)
 		}

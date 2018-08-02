@@ -6,7 +6,7 @@
 
     <groupId>net.perfectdreams.protocolsupportstuff</groupId>
     <artifactId>ProtocolSupportStuff</artifactId>
-    <version>2.0.0</version>
+    <version>2.1.0</version>
 
     <properties>
         <kotlin.version>1.2.51</kotlin.version>

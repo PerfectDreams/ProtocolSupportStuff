@@ -71,7 +71,11 @@ strip-colors-from-long-texts - If a sign has more than 16 characters (including 
 
 = Miscellaneous Stuff =
 add-to-lore            - Appends a text to the item lore if the item is remapped by ProtocolSupport
-newer-item-text-lore   - Text that will be appended to the item lore, if "add-to-lore" is enabled, {name} will be replaced by the item name.
+newer-item-text-lore   - Text that will be appended to the item lore, if "add-to-lore" is enabled.
+                        {name} will be replaced by the item name.
+						{id} will be replaced by the item ID ("minecraft:stone")
+                        {namespace} will be replaced by the item namespace ("minecraft")
+                        {key} will be replaced by the item key ("stone")
 translate-display-name - Changes the remapped item name to the "proper" item name
 
 = Credits  =
