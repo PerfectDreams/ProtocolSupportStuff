@@ -19,7 +19,7 @@ class ItemStackWriteListener(val m: ProtocolSupportStuff) : Listener {
 
 		val translationKey: String by lazy { TranslationAPI.getTranslationString(ev.locale, getTranslationKey(ev.original.type)) }
 
-		if (m.config.getBoolean("translate-display-name"))
+		if (m.config.getBoolean("translate-display-name") && ev.original?.itemMeta?.hasDisplayName() == false)
 			ev.forcedDisplayName = TextComponent("§f$translationKey")
 
 		if (m.config.getBoolean("add-to-lore")) {
