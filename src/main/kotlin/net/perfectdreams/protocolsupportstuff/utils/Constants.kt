@@ -24,7 +24,7 @@ blocks/items:
   to: New remap (use this or "to-state")
   from-state: Block state that will be remapped (use this or "from")
   to-state: New block state (use this or "to")
-  before/after/before-inclusive/after-inclusive/range: Minecraft Version(s)
+  before/after/before-inclusive/after-inclusive/between: Minecraft Version(s)
 
 If you don't like ProtocolSupport's default remaps, you can change them here!
 
@@ -49,7 +49,7 @@ Here is how you can specify what versions the new remap should affect:
   after: Minecraft 1.8 (Every version (but not including) after 1.8)
   before-including: Minecraft 1.12 (Every version (but including) before 1.12)
   after-including: Minecraft 1.8 (Every version (but including) after 1.8)
-  range: "Minecraft 1.8, Minecraft 1.9" (Every version between 1.8 and 1.9)
+  between: "Minecraft 1.8, Minecraft 1.9" (Every version between 1.8 and 1.9)
 
 = Hacks =
 Hacks can be used to fix features for older versions or to improve player experience on your server while using
