@@ -20,6 +20,7 @@ import protocolsupport.api.ProtocolSupportAPI
 import protocolsupport.api.ProtocolVersion
 import protocolsupport.api.remapper.BlockRemapperControl
 import protocolsupport.api.remapper.ItemRemapperControl
+import java.lang.NoClassDefFoundError
 
 class ProtocolSupportStuff : JavaPlugin() {
 	val blockRemappers = mutableMapOf<ProtocolVersion, BlockRemapperControl>()
@@ -37,7 +38,7 @@ class ProtocolSupportStuff : JavaPlugin() {
 	var paper = false
 
 	override fun onEnable() {
-		paper = try { PaperConfig::class.java.declaredFields; true } catch (e: Exception) { false }
+		paper = try { PaperConfig::class.java.declaredFields; true } catch (e: NoClassDefFoundError) { false }
 
 		val manager = PaperCommandManager(this)
 		manager.registerCommand(ProtocolSupportStuffCommand(this))
