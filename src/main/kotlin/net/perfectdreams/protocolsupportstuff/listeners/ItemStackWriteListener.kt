@@ -25,14 +25,13 @@ class ItemStackWriteListener(val m: ProtocolSupportStuff) : Listener {
 		if (m.config.getBoolean("add-to-lore")) {
 			val namespacedKey = ev.original.type.key
 
-			var loreText = m.config.getString("newer-item-text-lore").translateColorCodes()
-
-			loreText = loreText.replace("{name}", translationKey)
-					.replace("{id}", namespacedKey.namespace + ":" + namespacedKey.key)
-					.replace("{namespace}", namespacedKey.namespace)
-					.replace("{key}", namespacedKey.key)
-
-			ev.additionalLore.add(loreText)
+			for (loreLine in m.config.getStringList("newer-item-text-lore")) {
+				val replaced = loreLine.replace("{name}", translationKey)
+									   .replace("{id}", namespacedKey.namespace + ":" + namespacedKey.key)
+									   .replace("{namespace}", namespacedKey.namespace)
+									   .replace("{key}", namespacedKey.key)
+				ev.additionalLore.add(replaced)
+			}
 		}
 	}
 
